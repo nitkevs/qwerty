@@ -1,4 +1,6 @@
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.urls import reverse
 
 from cities.models import City
 
@@ -16,3 +18,19 @@ class Train(models.Model):
         verbose_name = 'Поезд'
         verbose_name_plural = 'Поезда'
         ordering = ['name']
+
+    def clean(self):
+        if self.from_city == self.to_city:
+            raise ValidationError('Изменить город прибытия')
+        qs = Train.objects.filter(
+            from_city=self.from_city, to_city=self.to_city,
+            travel_time=self.travel_time).exclude(pk=self.pk)
+        if qs.exists():
+            raise ValidationError('Изменить время в пути')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('trains:detail', kwargs={'pk': self.pk})
