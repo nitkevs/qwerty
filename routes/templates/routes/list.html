@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Список маршрутов{% endblock %}
+
+{% block content %}
+<h1>Список маршрутов</h1>
+<div class="row">
+    <div class="col-md">
+        <table class="table table-striped">
+            <tr>
+                <th>Название</th>
+                <th>Откуда</th>
+                <th>Куда</th>
+                <th>Время в пути</th>
+            </tr>
+        {% for object in page_obj %}
+            <tr>
+                <td>
+                    <a href="{% url 'detail' object.pk %}">{{ object.name }}</a>
+                </td>
+                <td>{{ object.from_city }}</td>
+                <td>{{ object.to_city }}</td>
+                <td>{{ object.travel_times }}</td>
+            </tr>
+
+        {% endfor %}
+        </table>
+    </div>
+</div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+    {% endif %}
+    <li class="page-item active"><a class="page-link">{{ page_obj.number }}</a></li>
+    {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+
+{% endblock %}
