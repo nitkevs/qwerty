@@ -35,7 +35,6 @@ def get_routes(request, form) -> dict:
     cities = data['cities']
     travelling_time = data['travelling_time']
     all_ways = list(dfs_paths(graph, from_city.id, to_city.id))
-    # print(list(all_ways))
     if not len(all_ways):
         raise ValueError('Маршрута, удовлетворяющего условиям не существует')
     if cities:
@@ -50,7 +49,6 @@ def get_routes(request, form) -> dict:
         right_ways = all_ways
     routes = []
     all_trains = {}
-    print(right_ways)
     for q in qs:
         all_trains.setdefault((q.from_city_id, q.to_city_id), [])
         all_trains[(q.from_city_id, q.to_city_id)].append(q)

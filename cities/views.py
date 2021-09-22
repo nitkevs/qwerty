@@ -25,7 +25,6 @@ def home(request, pk=None):
     if request.method == 'POST':
         form = CityForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
             form.save()
     else:
         form = CityForm()
