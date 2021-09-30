@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Список городов{% endblock %}
+
+{% block content %}
+<h1>Список поездов</h1>
+<div class="row">
+    <div class="col-md">
+        <table class="table table-striped">
+            <tr>
+                <th>Номер</th>
+                <th>Откуда</th>
+                <th>Куда</th>
+                <th>Вермя в пути</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+        {% for object in page_obj %}
+            <tr>
+                <td>
+                    <a href="{% url 'trains:detail' object.pk %}">{{ object.name }}</a>
+                </td>
+                <td>{{ object.from_city }}</td>
+                <td>{{ object.to_city }}</td>
+                <td>{{ object.travel_time }}</td>
+                <td>
+                    <a href="{% url 'trains:update' object.pk %}">
+                        <button type="submit" class="btn btn-primary">Редактировать</button>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'trains:delete' object.pk %}">
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </a>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </table>
+    </div>
+</div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+    {% endif %}
+    <li class="page-item active"><a class="page-link">{{ page_obj.number }}</a></li>
+    {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+
+{% endblock %}
